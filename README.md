@@ -1,3 +1,3 @@
-# SignalR-Message-Broadcasting
+# SignalR  - Shop-User-Message-Connection
 ASP .net core  Message Broadcasting Server to Clients 
 
