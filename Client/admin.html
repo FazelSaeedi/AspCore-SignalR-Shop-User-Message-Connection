@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <input style="width: 500px ; height: 50px" id="chatForm">
+    <button id="submit">Send Message</button>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aspnet-signalr/1.1.4/signalr.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aspnet-signalr/1.1.4/signalr.js" ></script>
+
+<script>
+
+    //Initialize SignalR
+    var connection = new signalR.HubConnectionBuilder()
+        .withUrl('http://localhost:5000/chatHub')
+        .build();
+
+    connection.on('ReceiveMessage', renderMessage);
+    connection.start();
+
+
+    function ready()
+    {
+        var  chatMessage = document.getElementById('chatForm')
+
+        document.getElementById('submit').addEventListener('click' , function (){
+            connection.invoke('SendMessage', "Visitor", chatMessage.value);
+        })
+    }
+
+    var number = 1
+    function renderMessage(name,time,message)
+    {
+        console.log(name , time , message)
+
+        var tag = document.createElement("p");
+        var text = document.createTextNode(number + " : " +message);
+        tag.appendChild(text);
+        var element = document.getElementById("new");
+        element.appendChild(tag);
+
+        number = number + 1
+    }
+
+
+    function SendMessage(text)
+    {
+        connection.invoke('SendMessage', "Visitor", text);
+    }
+
+
+    document.addEventListener('DOMcontentLoaded' , ready() )
+
+</script>
+
+</html>
