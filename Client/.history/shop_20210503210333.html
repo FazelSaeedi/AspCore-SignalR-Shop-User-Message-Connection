@@ -5,8 +5,15 @@
     <title>Title</title>
 </head>
 <body>
-    <input style="width: 500px ; height: 50px" id="chatForm">
-    <button id="submit">Send Message</button>
+<div id="new">
+    <p id="p1">Messenger</p>
+    <p id="p2">---------</p>
+</div>
+
+<div id="div1">
+
+</div>
+
 </body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aspnet-signalr/1.1.4/signalr.min.js" ></script>
@@ -16,8 +23,10 @@
 
     //Initialize SignalR
     var connection = new signalR.HubConnectionBuilder()
-        .withUrl('http://localhost:5000/chatHub')
+        .withUrl('http://localhost:5000/shophub?s=a' ,  { accessTokenFactory: () => this.loginToken })
         .build();
+        connection.qs = "loc=1221"
+        console.log(connection);
 
     connection.on('ReceiveMessage', renderMessage);
     connection.start();
@@ -25,11 +34,7 @@
 
     function ready()
     {
-        var  chatMessage = document.getElementById('chatForm')
 
-        document.getElementById('submit').addEventListener('click' , function (){
-            connection.invoke('SendMessage', "Visitor", chatMessage.value);
-        })
     }
 
     var number = 1
@@ -37,20 +42,16 @@
     {
         console.log(name , time , message)
 
-        var tag = document.createElement("p");
-        var text = document.createTextNode(number + " : " +message);
-        tag.appendChild(text);
-        var element = document.getElementById("new");
-        element.appendChild(tag);
+        var para = document.createElement("p");
+        var node = document.createTextNode( ""+number+"" + " : "+ message);
+        para.appendChild(node);
+        var element = document.getElementById("div1");
+        element.appendChild(para);
 
         number = number + 1
     }
 
 
-    function SendMessage(text)
-    {
-        connection.invoke('SendMessage', "Visitor", text);
-    }
 
 
     document.addEventListener('DOMcontentLoaded' , ready() )

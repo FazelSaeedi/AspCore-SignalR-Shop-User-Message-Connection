@@ -2,16 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Client</title>
+    <title>Title</title>
 </head>
 <body>
 <div id="new">
     
   
-    <p>Hellow New Client Please Enter Existance Shop Id  and randome Product Id</p>
     <label>ShopId</label>
     <input id="shopid" />
-
+    
     <br>
     
     <label>ProductId</label>
@@ -39,16 +38,17 @@
     connection.on('ReceiveMessage', renderMessage);
     connection.start();
 
-
+    setTimeout(function(){
+        connection.invoke('BuyProductFromShop', "100", "100");
+    }, 2000)
 
 
     function BuyProductFromShop ()
     {
-      
-        var shopid = document.getElementById("shopid").value;
-        var productid = document.getElementById("productid").value;
+        var productid = document.getElementById("productid");
+        var shopid = document.getElementById("shopid");
 
-        connection.invoke('BuyProductFromShop', shopid , productid);
+        connection.invoke('BuyProductFromShop', "100", "100");
 
     }
 

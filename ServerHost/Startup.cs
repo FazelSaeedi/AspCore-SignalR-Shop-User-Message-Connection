@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ServerHost.Services;
+using ServerHost.Services.Shop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +39,11 @@ namespace ServerHost
                     .SetIsOriginAllowed((host) => true));
             });
 
+            services.AddHttpContextAccessor();
             services.AddSignalR();
+
+            services.AddSingleton< IClientGroupService , inMemoryClientGroupService>();
+            services.AddSingleton< IShopGroupService   , inMemoryShopGroupService>();
 
             services.AddSwaggerGen(c =>
             {
@@ -48,6 +54,7 @@ namespace ServerHost
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -65,8 +72,7 @@ namespace ServerHost
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/chatHub");
-
+                endpoints.MapHub<MessagerHub>("/messangerhub");
             });
         }
     }

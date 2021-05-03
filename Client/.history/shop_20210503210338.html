@@ -2,22 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Client</title>
+    <title>Title</title>
 </head>
 <body>
 <div id="new">
-    
-  
-    <p>Hellow New Client Please Enter Existance Shop Id  and randome Product Id</p>
-    <label>ShopId</label>
-    <input id="shopid" />
-
-    <br>
-    
-    <label>ProductId</label>
-    <input id="productid" />
-
-    <button onclick="BuyProductFromShop()">Submit</button>
+    <p id="p1">Messenger</p>
+    <p id="p2">---------</p>
 </div>
 
 <div id="div1">
@@ -33,24 +23,13 @@
 
     //Initialize SignalR
     var connection = new signalR.HubConnectionBuilder()
-        .withUrl('http://localhost:5000/messangerhub?type=ClientToken')
+        .withUrl('http://localhost:5000/shophub?s=a' ,  { accessTokenFactory: () => "this.loginToken" })
         .build();
+        connection.qs = "loc=1221"
+        console.log(connection);
 
     connection.on('ReceiveMessage', renderMessage);
     connection.start();
-
-
-
-
-    function BuyProductFromShop ()
-    {
-      
-        var shopid = document.getElementById("shopid").value;
-        var productid = document.getElementById("productid").value;
-
-        connection.invoke('BuyProductFromShop', shopid , productid);
-
-    }
 
 
     function ready()
